@@ -1,0 +1,51 @@
+
+.clock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: $background-color;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .setters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  button {
+    background-color: $button-color;
+    color: $text-color;
+    font-size: 1.5rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  
+    &:hover {
+      background-color: lighten($button-color, 10%);
+    }
+  }
+
+  .flowers {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  
+  .flower {
+    width: 20px;
+    height: 20px;
+    background-color: $flower-color;
+    border-radius: 50%;
+    position: absolute;
+    animation: pop-in 0.5s ease-out;
+    pointer-events: none;
+    z-index: 0;
+  }
+  
+  

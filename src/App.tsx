@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
-import "./App.css";
-import { DisplayState } from "./helpers";
+import "./styles/main.scss";
+import { DisplayState, Flower } from "./helpers";
 import TimeSetter from "./TimeSetter";
 import Display from "./Display";
 import AlarmSound from "./assets/AlarmSound.mp3";
@@ -19,6 +19,20 @@ function App() {
     timeType: "Session",
     timerRunning: false,
   });
+  const [flowers, setFlowers] = useState<Flower[]>([]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const newFlower = {
+        id: Date.now(),
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+      };
+      setFlowers((prevFlowers) => [...prevFlowers, newFlower]);
+    }, 60000);
+
+    return () => clearInterval(interval);
+    }, []);
 
   const timerRef = useRef<number | null> (null);
   useEffect(() => {
@@ -135,6 +149,15 @@ function App() {
         displayState={displayState} reset={reset} startStop={startStop}
       />
       <audio id="beep" src={AlarmSound} />
+      <div className="flowers">
+        {flowers.map((flower) => (
+          <div
+            key={flower.id}
+            className="flower"
+            style={{ left: `${flower.x}%`, top: `${flower.y}%` }}
+          ></div>
+        ))}
+      </div>
     </div>
   );
 }

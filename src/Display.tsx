@@ -15,7 +15,7 @@ const Display: React.FC<DisplayProps> = ({
     return (
         <div className="display">
             <h4 id="timer-label">{displayState.timeType}</h4>
-            <span id="time-left" style={{color: `${displayState.timerRunning ? "white" : "red"}`}}>{formatTime(displayState.time)}</span>
+            <span id="time-left" style={{color: `${displayState.timerRunning ? "rgba(53, 52, 52, 0.87)" : "red"}`}}>{formatTime(displayState.time)}</span>
             <div>
                 <button id="start_stop" onClick={() => startStop(displayState)}>
                     {displayState.timerRunning ? <FaPause /> : <FaPlay />}

@@ -9,3 +9,9 @@ export const formatTime = (time: number): string => {
     const seconds = time % 60;
     return `${minutes < 10 ? "0" + minutes.toString() : minutes}:${seconds < 10 ? "0" + seconds.toString() : seconds}`;
 };
+
+export type Flower = {
+    id: number;
+    x: number;
+    y: number;
+};
