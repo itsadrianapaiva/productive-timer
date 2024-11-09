@@ -11,6 +11,14 @@ const min = 60;
 const max = 60 * 60;
 const interval = 60;
 
+const flowerColors = [
+  '#ff69b4', // pink
+  '#ff9ecd', // light pink
+  '#ffb6c1', // lighter pink
+  '#ffc0cb', // even lighter pink
+  '#dda0dd'  // plum
+];
+
 function App() {
   const [breakTime, setBreakTime] = useState(defaultBreakTime);
   const [sessionTime, setSessionTime] = useState(defaultSessionTime);
@@ -22,17 +30,20 @@ function App() {
   const [flowers, setFlowers] = useState<Flower[]>([]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const flowerInterval = setInterval(() => {
       const newFlower = {
         id: Date.now(),
         x: Math.random() * 100,
         y: Math.random() * 100,
+        size: Math.random() * (2.5 - 0.8) + 0.8,
+        type: Math.floor(Math.random() * 3), // 0-2 for different flower types
+      color: flowerColors[Math.floor(Math.random() * flowerColors.length)]
       };
       setFlowers((prevFlowers) => [...prevFlowers, newFlower]);
-    }, 60000);
+    }, 20000);
 
-    return () => clearInterval(interval);
-    }, []);
+    return () => clearInterval(flowerInterval);
+    }, [displayState.timerRunning]);
 
   const timerRef = useRef<number | null> (null);
   useEffect(() => {
@@ -68,8 +79,10 @@ function App() {
       const audio = document.getElementById("beep") as HTMLAudioElement;
       audio.currentTime = 0;
       audio.play().catch((err) => console.log(err));
-  
-     
+
+console.log(displayState.timeType);
+console.log(displayState.timerRunning);
+
       setTimeout(() => {
         setDisplayState((prev) => ({
           ...prev,
@@ -79,7 +92,10 @@ function App() {
         }));
       }, 1000); 
     }
-  }, [displayState.time, breakTime, sessionTime]);
+    console.log(displayState.timeType);
+console.log(displayState.timerRunning);
+
+  }, [displayState.time, breakTime, sessionTime, displayState.timerRunning, displayState.timeType]);
   
 
   const reset = () => {
@@ -90,6 +106,7 @@ function App() {
 
     setBreakTime(defaultBreakTime);
     setSessionTime(defaultSessionTime);
+    setFlowers([]);
 
     setDisplayState({
       time: defaultSessionTime,
@@ -107,6 +124,7 @@ function App() {
       ...prev, 
       timerRunning: !prev.timerRunning
     }))
+    console.log(displayState)
   };
 
   const changeBreakTime = (time: number) => {
@@ -152,10 +170,18 @@ function App() {
       <div className="flowers">
         {flowers.map((flower) => (
           <div
-            key={flower.id}
-            className="flower"
-            style={{ left: `${flower.x}%`, top: `${flower.y}%` }}
-          ></div>
+          key={flower.id}
+          className={`flower type-${flower.type}`}
+          style={{ 
+            left: `${flower.x}%`, 
+        top: `${flower.y}%`,
+        width: `${flower.size * 30}px`,
+        height: `${flower.size * 30}px`,
+        color: flower.color,
+        opacity: 0.8,
+        transition: 'all 0.3s ease-out'
+          }}
+        ></div>
         ))}
       </div>
     </div>

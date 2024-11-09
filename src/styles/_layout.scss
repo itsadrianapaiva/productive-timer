@@ -1,51 +1,155 @@
-
 .clock {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: $background-color;
-    padding: 2rem;
-    border-radius: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .setters {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 2rem;
-  }
-  
-  button {
-    background-color: $button-color;
-    color: $text-color;
-    font-size: 1.5rem;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-  
-    &:hover {
-      background-color: lighten($button-color, 10%);
-    }
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: $background;
+  padding: 2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-size: 1.5rem;
+  height: 100vh;
+  z-index: 1;
+}
 
-  .flowers {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
+.setters {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  z-index: 2;
+}
+
+#break-label,
+#session-label {
+  text-align: center;
+}
+
+#break-length,
+#session-length {
+  font-size: 1.8rem;
+}
+
+.display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+  font-size: 1.9rem;
+  margin-top: 5rem;
+  z-index: 3;
+}
+
+#start_stop,
+#reset {
+  margin: 1rem 1rem;
+  font-size: 2rem;
+  padding: 1rem 2rem;
+}
+
+button {
+  background-color: $button-color;
+  color: $text-color;
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  margin: 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 3;
+
+  &:hover {
+    background-color: lighten($button-color, 10%);
   }
+}
+
+.flowers {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
   
   .flower {
-    width: 20px;
-    height: 20px;
-    background-color: $flower-color;
-    border-radius: 50%;
     position: absolute;
-    animation: pop-in 0.5s ease-out;
+    transform: translate(-50%, -50%);
     pointer-events: none;
-    z-index: 0;
+  z-index: 0;
+  
+    // Common center style for all flowers
+    &::before {
+      content: '';
+      position: absolute;
+      width: 25%;
+      height: 25%;
+      background: #ffd700;
+      border-radius: 50%;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+    } 
+  
+    // Type 0: Overlapping round petals
+    &.type-0 {
+      &::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background:
+          radial-gradient(circle at 50% 20%, currentColor 35%, transparent 35%),
+          radial-gradient(circle at 80% 35%, currentColor 35%, transparent 35%),
+          radial-gradient(circle at 85% 65%, currentColor 35%, transparent 35%),
+          radial-gradient(circle at 65% 85%, currentColor 35%, transparent 35%),
+          radial-gradient(circle at 35% 85%, currentColor 35%, transparent 35%),
+          radial-gradient(circle at 15% 65%, currentColor 35%, transparent 35%),
+          radial-gradient(circle at 20% 35%, currentColor 35%, transparent 35%);
+        animation: rotate 25s linear infinite;
+      }
+    }
+  
+    // Type 1: Heart-shaped petals
+    &.type-1 {
+      &::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background:
+          radial-gradient(circle at 50% 15%, currentColor 30%, transparent 30%),
+          radial-gradient(circle at 85% 50%, currentColor 30%, transparent 30%),
+          radial-gradient(circle at 50% 85%, currentColor 30%, transparent 30%),
+          radial-gradient(circle at 15% 50%, currentColor 30%, transparent 30%),
+          radial-gradient(circle at 30% 30%, currentColor 30%, transparent 30%),
+          radial-gradient(circle at 70% 30%, currentColor 30%, transparent 30%),
+          radial-gradient(circle at 70% 70%, currentColor 30%, transparent 30%),
+          radial-gradient(circle at 30% 70%, currentColor 30%, transparent 30%);
+        animation: rotate 20s linear infinite;
+      }
+    }
+  
+    // Type 2: Simple rounded petals
+    &.type-2 {
+      &::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background:
+          radial-gradient(ellipse at 50% 0%, currentColor 40%, transparent 40%),
+          radial-gradient(ellipse at 85% 30%, currentColor 40%, transparent 40%),
+          radial-gradient(ellipse at 85% 70%, currentColor 40%, transparent 40%),
+          radial-gradient(ellipse at 50% 100%, currentColor 40%, transparent 40%),
+          radial-gradient(ellipse at 15% 70%, currentColor 40%, transparent 40%),
+          radial-gradient(ellipse at 15% 30%, currentColor 40%, transparent 40%);
+        animation: rotate 22s linear infinite;
+      }
+    }
   }
   
-  
+  @keyframes rotate {
+    to {
+      transform: rotate(360deg);
+    }
+  }

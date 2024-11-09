@@ -14,4 +14,7 @@ export type Flower = {
     id: number;
     x: number;
     y: number;
+    size: number;
+    type: number;
+    color: string;
 };
