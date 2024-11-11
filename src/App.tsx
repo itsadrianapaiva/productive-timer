@@ -72,31 +72,60 @@ function App() {
     };
   }, [displayState.timerRunning]);
 
-  useEffect(() => {
-    if (displayState.time === 0) {
-      setDisplayState((prev) => ({ ...prev, timerRunning: false }));
+//   useEffect(() => {
+//     if (displayState.time === 0) {
+//       setDisplayState((prev) => ({ ...prev, timerRunning: false }));
   
-      const audio = document.getElementById("beep") as HTMLAudioElement;
-      audio.currentTime = 0;
-      audio.play().catch((err) => console.log(err));
+//       const audio = document.getElementById("beep") as HTMLAudioElement;
+//       audio.currentTime = 0;
+//       audio.play().catch((err) => console.log(err));
 
-console.log(displayState.timeType);
-console.log(displayState.timerRunning);
+// console.log(displayState.timeType);
+// console.log(displayState.timerRunning);
 
-      setTimeout(() => {
-        setDisplayState((prev) => ({
-          ...prev,
-          timeType: prev.timeType === "Session" ? "Break" : "Session",
-          time: prev.timeType === "Session" ? breakTime : sessionTime,
-          timerRunning: true,
-        }));
-      }, 1000); 
-    }
-    console.log(displayState.timeType);
-console.log(displayState.timerRunning);
+//       setTimeout(() => {
+//         setDisplayState((prev) => ({
+//           ...prev,
+//           timeType: prev.timeType === "Session" ? "Break" : "Session",
+//           time: prev.timeType === "Session" ? breakTime : sessionTime,
+//           timerRunning: true,
+//         }));
+//       }, 1000); 
+//     }
+//     console.log(displayState.timeType);
+// console.log(displayState.timerRunning);
 
-  }, [displayState.time, breakTime, sessionTime, displayState.timerRunning, displayState.timeType]);
-  
+//   }, [displayState.time, breakTime, sessionTime, displayState.timerRunning, displayState.timeType]);
+
+// Separate `useEffect` for switching `timeType` and resetting `time` when `time` reaches 0
+useEffect(() => {
+  if (displayState.time === 0) {
+    const audio = document.getElementById("beep") as HTMLAudioElement;
+    audio.currentTime = 0;
+    audio.play().catch((err) => console.log(err));
+
+    setDisplayState((prev) => ({
+      ...prev,
+      timeType: prev.timeType === "Session" ? "Break" : "Session",
+      time: prev.timeType === "Session" ? breakTime : sessionTime,
+      timerRunning: true, // Automatically start the next session
+    }));
+  }
+}, [displayState.time, breakTime, sessionTime]);
+
+// Effect to handle countdown when timer is running
+useEffect(() => {
+  if (displayState.timerRunning) {
+    const intervalId = setInterval(() => {
+      setDisplayState((prev) => ({
+        ...prev,
+        time: prev.time > 0 ? prev.time - 1 : 0, // Prevent negative time values
+      }));
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }
+}, [displayState.timerRunning]);
 
   const reset = () => {
     if (timerRef.current) {
@@ -151,21 +180,28 @@ console.log(displayState.timerRunning);
 
   return (
     <div className="clock">
+      <h1 id="title">Pomodoro Timer</h1>
       <div className="setters">
         <div className="break">
+          <div className="box">
           <h4 id="break-label">Break Length</h4>
           <TimeSetter 
             time={breakTime} setTime={changeBreakTime} min={min} max={max} interval={interval} type="break"/>
         </div>
+        </div>
         <div className="session">
+          <div className="box">
           <h4 id="session-label">Session Length</h4>
           <TimeSetter 
             time={sessionTime} setTime={changeSessionTime} min={min} max={max} interval={interval} type="session"/>
         </div>
+        </div>
       </div>
+      <div className="box">
       <Display 
         displayState={displayState} reset={reset} startStop={startStop}
       />
+      </div>
       <audio id="beep" src={AlarmSound} />
       <div className="flowers">
         {flowers.map((flower) => (

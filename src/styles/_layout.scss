@@ -9,6 +9,25 @@
   font-size: 1.5rem;
   height: 100vh;
   z-index: 1;
+  font-family: "Klee One", cursive;
+  font-weight: 1000;
+  font-style: normal;
+}
+
+#title {
+  font-size: 4rem;
+  margin-bottom: 4rem;
+  z-index: 2;
+  font-family: "Bonbon", cursive;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.box {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  padding: 0.5rem;
+  z-index: 1;
 }
 
 .setters {
@@ -34,9 +53,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   font-size: 1.9rem;
-  margin-top: 5rem;
+  margin-top: 1rem;
   z-index: 3;
 }
 
